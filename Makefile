@@ -4,11 +4,15 @@ GOOS    := $(shell go env GOOS)
 GOARCH  := $(shell go env GOARCH)
 
 .PHONY: all
-all: build
+all: vet build
 
 .PHONY: build
 build:
 	go build -ldflags "-X main.version=$(VERSION)" ./cmd/qlap
+
+.PHONY: vet
+vet:
+	go vet
 
 .PHONY: package
 package: clean build
