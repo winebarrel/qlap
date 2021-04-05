@@ -13,7 +13,7 @@ Usage of qlap:
   -auto-generate-sql-secondary-indexes int
     	Number of secondary indexes in the table to be created
   -auto-generate-sql-write-number int
-    	Number of rows to be pre-populated (default 100)
+    	Number of rows to be pre-populated for each agent (default 100)
   -char-cols-index
     	Create an index on the VARCHAR column if 'true'
   -commit-rate int
