@@ -25,7 +25,7 @@ Usage of qlap:
   -engine string
     	Engine of the table to be created
   -hinterval string
-    	Histogram interval (default "0")
+    	Histogram interval, e.g. '100ms' (default "0")
   -int-cols-index
     	Create an index on the INT column if 'true'
   -nagents int
@@ -52,36 +52,9 @@ $ qlap -dsn root:@/ -nagents 3 -rate 100 -time 10 \
 00:10 | 3 agents / run 2727 queries (303 qps)
 
 {
-  "StartedAt": "2021-04-05T19:21:33.815362+09:00",
-  "FinishedAt": "2021-04-05T19:21:43.831067+09:00",
+  "StartedAt": "2021-04-05T20:05:52.928409+09:00",
+  "FinishedAt": "2021-04-05T20:06:02.944544+09:00",
   "ElapsedTime": 10,
-  "MysqlConfig": {
-    "User": "root",
-    "Passwd": "",
-    "Net": "tcp",
-    "Addr": "127.0.0.1:3306",
-    "DBName": "qlap",
-    "Params": null,
-    "Collation": "utf8mb4_general_ci",
-    "Loc": {},
-    "MaxAllowedPacket": 4194304,
-    "ServerPubKey": "",
-    "TLSConfig": "",
-    "Timeout": 0,
-    "ReadTimeout": 0,
-    "WriteTimeout": 0,
-    "AllowAllFiles": false,
-    "AllowCleartextPasswords": false,
-    "AllowNativePasswords": true,
-    "AllowOldPasswords": false,
-    "CheckConnLiveness": true,
-    "ClientFoundRows": false,
-    "ColumnsWithAlias": false,
-    "InterpolateParams": false,
-    "MultiStatements": false,
-    "ParseTime": false,
-    "RejectReadOnly": false
-  },
   "NAgents": 3,
   "Time": 10000000000,
   "Rate": 100,
@@ -98,62 +71,62 @@ $ qlap -dsn root:@/ -nagents 3 -rate 100 -time 10 \
   "CharColsIndex": false,
   "Query": "",
   "PreQueries": null,
-  "Token": "20c792d5-c8f8-45b9-818f-2c151ff0eece",
-  "Queries": 2929,
-  "QPS": 292.44186718006193,
+  "Token": "52a44dcf-6636-4a83-b627-00806f369e2e",
+  "Queries": 2828,
+  "QPS": 282.34726747872327,
   "MaxQPS": 304,
-  "MinQPS": 202,
+  "MinQPS": 101,
   "MedianQPS": 303,
   "ExpectedQPS": 300,
   "Response": {
     "Time": {
-      "Cumulative": "1.687329538s",
-      "HMean": "475.205µs",
-      "Avg": "576.077µs",
-      "P50": "518.562µs",
-      "P75": "736.735µs",
-      "P95": "957.849µs",
-      "P99": "1.28271ms",
-      "P999": "2.803472ms",
-      "Long5p": "1.23627ms",
-      "Short5p": "209.029µs",
-      "Max": "4.93772ms",
-      "Min": "138.463µs",
-      "Range": "4.799257ms",
-      "StdDev": "270.592µs"
+      "Cumulative": "1.72131028s",
+      "HMean": "524.378µs",
+      "Avg": "608.667µs",
+      "P50": "563.136µs",
+      "P75": "780.498µs",
+      "P95": "956.474µs",
+      "P99": "1.228807ms",
+      "P999": "2.56122ms",
+      "Long5p": "1.190527ms",
+      "Short5p": "263.358µs",
+      "Max": "7.461918ms",
+      "Min": "148.608µs",
+      "Range": "7.31331ms",
+      "StdDev": "268.573µs"
     },
     "Rate": {
-      "Second": 1735.8790526904177
+      "Second": 1642.934474312208
     },
-    "Samples": 2929,
-    "Count": 2929,
+    "Samples": 2828,
+    "Count": 2828,
     "Histogram": [
       {
-        "138µs - 618µs": 1769
+        "148µs - 879µs": 2470
       },
       {
-        "618µs - 1.098ms": 1097
+        "879µs - 1.611ms": 350
       },
       {
-        "1.098ms - 1.578ms": 41
+        "1.611ms - 2.342ms": 3
       },
       {
-        "1.578ms - 2.058ms": 15
+        "2.342ms - 3.073ms": 4
       },
       {
-        "2.058ms - 2.538ms": 3
+        "3.073ms - 3.805ms": 1
       },
       {
-        "2.538ms - 3.018ms": 3
+        "3.805ms - 4.536ms": 0
       },
       {
-        "3.018ms - 3.497ms": 1
+        "4.536ms - 5.267ms": 0
       },
       {
-        "3.497ms - 3.977ms": 0
+        "5.267ms - 5.999ms": 0
       },
       {
-        "3.977ms - 4.457ms": 0
+        "5.999ms - 6.73ms": 0
       }
     ]
   }

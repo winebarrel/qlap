@@ -18,9 +18,9 @@ const (
 )
 
 type TaskOpts struct {
-	MysqlConfig            *MysqlConfig
+	MysqlConfig            *MysqlConfig `json:"-"`
 	NAgents                int
-	Time                   time.Duration
+	Time                   time.Duration `json:"-"`
 	Rate                   int
 	AutoGenerateSql        bool
 	NumberPrePopulatedData int
