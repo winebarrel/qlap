@@ -54,6 +54,10 @@ func newData(opts *DataOpts, idList []int) (data *Data) {
 func (data *Data) initStmts() []string {
 	stmts := []string{}
 
+	if data.CommitRate > 0 {
+		stmts = append(stmts, "SET autocommit = 0")
+	}
+
 	if len(data.PreQueries) > 0 {
 		stmts = append(stmts, data.PreQueries...)
 	}
