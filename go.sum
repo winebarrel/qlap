@@ -1,0 +1,14 @@
+github.com/go-sql-driver/mysql v1.5.0 h1:ozyZYNQW3x3HtqT1jira07DN2PArx2v7/mN66gGcHOs=
+github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LBy8hT2VhHyBg=
+github.com/google/uuid v1.2.0 h1:qJYtXnJRWmpe7m/3XlyhrsLrEURqHRM2kxzoxXqyUDs=
+github.com/google/uuid v1.2.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/jamiealquiza/tachymeter v2.0.0+incompatible h1:mGiF1DGo8l6vnGT8FXNNcIXht/YmjzfraiUprXYwJ6g=
+github.com/jamiealquiza/tachymeter v2.0.0+incompatible/go.mod h1:Ayf6zPZKEnLsc3winWEXJRkTBhdHo58HODAu1oFJkYU=
+github.com/winebarrel/tachymeter v0.0.0-20200513080248-97d8fe8db2e3 h1:t5ghePxskGmdoLvdDKLFuDTARfYnLvP65UzrTTPE8xU=
+github.com/winebarrel/tachymeter v0.0.0-20200513080248-97d8fe8db2e3/go.mod h1:LiToBvR0aZGMpiO6yk3pHkMnVOVU9m/JxZoMNASdK6k=
+golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
+golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
+golang.org/x/sys v0.0.0-20201119102817-f84b799fce68 h1:nxC68pudNYkKU6jWhgrqdreuFiOQWj1Fs7T3VrH4Pjw=
+golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
+golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1 h1:v+OssWQX+hTHEmOBgwxdZxK4zHq3yOs8F9J7mk0PY8E=
+golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
