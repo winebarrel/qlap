@@ -45,15 +45,15 @@ Usage of qlap:
 ```
 
 ```
-$ qlap -dsn root:@/ -nagents 3 -time 10 \
+$ qlap -dsn root:@/ -nagents 3 -rate 100 -time 10 \
     -auto-generate-sql -auto-generate-sql-load-type mixed \
     -number-int-cols 3 -number-char-cols 3
 
-00:10 | 3 agents / run 158675 queries (17704 qps)
+00:10 | 3 agents / run 2727 queries (303 qps)
 
 {
-  "StartedAt": "2021-04-05T19:11:45.309493+09:00",
-  "FinishedAt": "2021-04-05T19:11:55.309901+09:00",
+  "StartedAt": "2021-04-05T19:21:33.815362+09:00",
+  "FinishedAt": "2021-04-05T19:21:43.831067+09:00",
   "ElapsedTime": 10,
   "MysqlConfig": {
     "User": "root",
@@ -84,7 +84,7 @@ $ qlap -dsn root:@/ -nagents 3 -time 10 \
   },
   "NAgents": 3,
   "Time": 10000000000,
-  "Rate": 0,
+  "Rate": 100,
   "AutoGenerateSql": true,
   "NumberPrePopulatedData": 100,
   "DropExistingDatabase": false,
@@ -98,65 +98,62 @@ $ qlap -dsn root:@/ -nagents 3 -time 10 \
   "CharColsIndex": false,
   "Query": "",
   "PreQueries": null,
-  "Token": "63b2933f-ac01-480a-9bf6-63047bcacd1d",
-  "Queries": 158675,
-  "QPS": 15866.91373657773,
-  "MaxQPS": 17919,
-  "MinQPS": 17347,
-  "MedianQPS": 17716,
-  "ExpectedQPS": 0,
+  "Token": "20c792d5-c8f8-45b9-818f-2c151ff0eece",
+  "Queries": 2929,
+  "QPS": 292.44186718006193,
+  "MaxQPS": 304,
+  "MinQPS": 202,
+  "MedianQPS": 303,
+  "ExpectedQPS": 300,
   "Response": {
     "Time": {
-      "Cumulative": "26.437103022s",
-      "HMean": "139.583µs",
-      "Avg": "166.611µs",
-      "P50": "152.834µs",
-      "P75": "216.269µs",
-      "P95": "287.631µs",
-      "P99": "336.278µs",
-      "P999": "596.327µs",
-      "Long5p": "340.025µs",
-      "Short5p": "81.759µs",
-      "Max": "7.417935ms",
-      "Min": "68.841µs",
-      "Range": "7.349094ms",
-      "StdDev": "89.355µs"
+      "Cumulative": "1.687329538s",
+      "HMean": "475.205µs",
+      "Avg": "576.077µs",
+      "P50": "518.562µs",
+      "P75": "736.735µs",
+      "P95": "957.849µs",
+      "P99": "1.28271ms",
+      "P999": "2.803472ms",
+      "Long5p": "1.23627ms",
+      "Short5p": "209.029µs",
+      "Max": "4.93772ms",
+      "Min": "138.463µs",
+      "Range": "4.799257ms",
+      "StdDev": "270.592µs"
     },
     "Rate": {
-      "Second": 6001.98137700475
+      "Second": 1735.8790526904177
     },
-    "Samples": 158675,
-    "Count": 158675,
+    "Samples": 2929,
+    "Count": 2929,
     "Histogram": [
       {
-        "68µs - 803µs": 158564
+        "138µs - 618µs": 1769
       },
       {
-        "803µs - 1.538ms": 74
+        "618µs - 1.098ms": 1097
       },
       {
-        "1.538ms - 2.273ms": 11
+        "1.098ms - 1.578ms": 41
       },
       {
-        "2.273ms - 3.008ms": 14
+        "1.578ms - 2.058ms": 15
       },
       {
-        "3.008ms - 3.743ms": 1
+        "2.058ms - 2.538ms": 3
       },
       {
-        "3.743ms - 4.478ms": 2
+        "2.538ms - 3.018ms": 3
       },
       {
-        "4.478ms - 5.213ms": 5
+        "3.018ms - 3.497ms": 1
       },
       {
-        "5.213ms - 5.948ms": 1
+        "3.497ms - 3.977ms": 0
       },
       {
-        "5.948ms - 6.683ms": 1
-      },
-      {
-        "6.683ms - 7.417ms": 2
+        "3.977ms - 4.457ms": 0
       }
     ]
   }
