@@ -52,11 +52,10 @@ $ qlap -dsn root:@/ -nagents 3 -rate 100 -time 10 \
 00:10 | 3 agents / run 2727 queries (303 qps)
 
 {
-  "StartedAt": "2021-04-05T20:05:52.928409+09:00",
-  "FinishedAt": "2021-04-05T20:06:02.944544+09:00",
+  "StartedAt": "2021-04-05T20:47:48.122543+09:00",
+  "FinishedAt": "2021-04-05T20:47:58.140224+09:00",
   "ElapsedTime": 10,
   "NAgents": 3,
-  "Time": 10000000000,
   "Rate": 100,
   "AutoGenerateSql": true,
   "NumberPrePopulatedData": 100,
@@ -71,62 +70,62 @@ $ qlap -dsn root:@/ -nagents 3 -rate 100 -time 10 \
   "CharColsIndex": false,
   "Query": "",
   "PreQueries": null,
-  "Token": "52a44dcf-6636-4a83-b627-00806f369e2e",
-  "Queries": 2828,
-  "QPS": 282.34726747872327,
-  "MaxQPS": 304,
-  "MinQPS": 101,
+  "Token": "bf9716b4-c9c8-4539-9295-701cc46daa21",
+  "Queries": 2930,
+  "QPS": 292.4863396144265,
+  "MaxQPS": 305,
+  "MinQPS": 202,
   "MedianQPS": 303,
   "ExpectedQPS": 300,
   "Response": {
     "Time": {
-      "Cumulative": "1.72131028s",
-      "HMean": "524.378µs",
-      "Avg": "608.667µs",
-      "P50": "563.136µs",
-      "P75": "780.498µs",
-      "P95": "956.474µs",
-      "P99": "1.228807ms",
-      "P999": "2.56122ms",
-      "Long5p": "1.190527ms",
-      "Short5p": "263.358µs",
-      "Max": "7.461918ms",
-      "Min": "148.608µs",
-      "Range": "7.31331ms",
-      "StdDev": "268.573µs"
+      "Cumulative": "1.70378355s",
+      "HMean": "499.554µs",
+      "Avg": "581.496µs",
+      "P50": "535.414µs",
+      "P75": "703.491µs",
+      "P95": "951.235µs",
+      "P99": "1.224525ms",
+      "P999": "3.198177ms",
+      "Long5p": "1.242647ms",
+      "Short5p": "249.39µs",
+      "Max": "7.235566ms",
+      "Min": "145.575µs",
+      "Range": "7.089991ms",
+      "StdDev": "274.566µs"
     },
     "Rate": {
-      "Second": 1642.934474312208
+      "Second": 1719.7020126177413
     },
-    "Samples": 2828,
-    "Count": 2828,
+    "Samples": 2930,
+    "Count": 2930,
     "Histogram": [
       {
-        "148µs - 879µs": 2470
+        "145µs - 854µs": 2610
       },
       {
-        "879µs - 1.611ms": 350
+        "854µs - 1.563ms": 312
       },
       {
-        "1.611ms - 2.342ms": 3
+        "1.563ms - 2.272ms": 1
       },
       {
-        "2.342ms - 3.073ms": 4
+        "2.272ms - 2.981ms": 1
       },
       {
-        "3.073ms - 3.805ms": 1
+        "2.981ms - 3.69ms": 5
       },
       {
-        "3.805ms - 4.536ms": 0
+        "3.69ms - 4.399ms": 1
       },
       {
-        "4.536ms - 5.267ms": 0
+        "4.399ms - 5.108ms": 0
       },
       {
-        "5.267ms - 5.999ms": 0
+        "5.108ms - 5.817ms": 0
       },
       {
-        "5.999ms - 6.73ms": 0
+        "5.817ms - 6.526ms": 0
       }
     ]
   }
