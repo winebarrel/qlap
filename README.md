@@ -45,7 +45,6 @@ Usage of qlap:
 ```
 
 ```
-
 $ qlap -dsn root:@/ -nagents 3 -time 10 \
     -auto-generate-sql -auto-generate-sql-load-type mixed \
     -number-int-cols 3 -number-char-cols 3
