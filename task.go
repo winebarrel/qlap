@@ -114,24 +114,20 @@ func (task *Task) setupDB() ([]int, error) {
 		return nil, fmt.Errorf("Use database error: %w", err)
 	}
 
-	data := newData(task.dataOpts, nil)
-	tblStmt := data.buildCreateTableStmt()
+	tblStmt := newData(task.dataOpts, nil).buildCreateTableStmt()
 	_, err = db.Exec(tblStmt)
 
 	if err != nil {
 		return nil, fmt.Errorf("Create table error: %w", err)
 	}
 
-	for i := 0; i < task.NumberPrePopulatedData; i++ {
-		insStmt := data.buildInsertStmt()
-		_, err = db.Exec(insStmt)
+	err = task.prePopulatData()
 
-		if err != nil {
-			return nil, fmt.Errorf("Pre-populate data error (query=%s): %w", insStmt, err)
-		}
+	if err != nil {
+		return nil, fmt.Errorf("Pre-populate data error: %w", err)
 	}
 
-	idList := make([]int, task.NumberPrePopulatedData)
+	idList := make([]int, task.NumberPrePopulatedData*task.NAgents)
 	rs, err := db.Query("SELECT id FROM t1")
 
 	if err != nil {
@@ -147,6 +143,39 @@ func (task *Task) setupDB() ([]int, error) {
 	}
 
 	return idList, nil
+}
+
+func (task *Task) prePopulatData() error {
+	eg, ctx := errgroup.WithContext(context.Background())
+
+	for i := 0; i < task.NAgents; i++ {
+		eg.Go(func() error {
+			data := newData(task.dataOpts, nil)
+			db, err := task.MysqlConfig.openAndPing(1)
+
+			if err != nil {
+				return fmt.Errorf("Connection error: %w", err)
+			}
+
+			for i := 0; i < task.NumberPrePopulatedData; i++ {
+				select {
+				case <-ctx.Done():
+					return nil
+				default:
+					insStmt := data.buildInsertStmt()
+					_, err = db.Exec(insStmt)
+
+					if err != nil {
+						return fmt.Errorf("Insert error (query=%s): %w", insStmt, err)
+					}
+				}
+			}
+
+			return nil
+		})
+	}
+
+	return eg.Wait()
 }
 
 func (task *Task) Run() (*Recorder, error) {

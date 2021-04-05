@@ -39,7 +39,7 @@ func parseFlags() (flags *Flags) {
 	flag.IntVar(&flags.Rate, "rate", 0, "Rate limit for each agent (qps). Zero is unlimited")
 	flag.BoolVar(&flags.AutoGenerateSql, "auto-generate-sql", false, "Automatically generate SQL to execute")
 	flag.StringVar(&flags.Query, "query", "", "SQL to execute")
-	flag.IntVar(&flags.NumberPrePopulatedData, "auto-generate-sql-write-number", DefaultNumberPrePopulatedData, "Number of rows to be pre-populated")
+	flag.IntVar(&flags.NumberPrePopulatedData, "auto-generate-sql-write-number", DefaultNumberPrePopulatedData, "Number of rows to be pre-populated for each agent")
 	strLoadType := flag.String("auto-generate-sql-load-type", DefaultLoadType, "Test load type: 'mixed', 'update', 'write', or 'key'")
 	flag.IntVar(&flags.NumberSecondaryIndexes, "auto-generate-sql-secondary-indexes", 0, "Number of secondary indexes in the table to be created")
 	flag.IntVar(&flags.CommitRate, "commit-rate", 0, "Commit every X queries")
