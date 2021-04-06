@@ -15,7 +15,7 @@ vet:
 	go vet
 
 .PHONY: package
-package: clean build
+package: clean vet build
 	gzip qlap -c > qlap_$(VERSION)_$(GOOS)_$(GOARCH).gz
 	sha1sum qlap_$(VERSION)_$(GOOS)_$(GOARCH).gz > qlap_$(VERSION)_$(GOOS)_$(GOARCH).gz.sha1sum
 
