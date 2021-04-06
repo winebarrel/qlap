@@ -157,6 +157,8 @@ func (task *Task) prePopulatData() error {
 				return fmt.Errorf("Connection error: %w", err)
 			}
 
+			defer db.Close()
+
 			for i := 0; i < task.NumberPrePopulatedData; i++ {
 				select {
 				case <-ctx.Done():
