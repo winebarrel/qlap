@@ -1,6 +1,6 @@
 # qlap
 
-qlap is a MySQL benchmarking tool like [mysqlslap](https://dev.mysql.com/doc/refman/8.0/en/mysqlslap.html).
+qlap is a MySQL load testing tool like [mysqlslap](https://dev.mysql.com/doc/refman/8.0/en/mysqlslap.html).
 
 ## Usage
 
