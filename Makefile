@@ -21,9 +21,14 @@ vet:
 
 .PHONY: package
 package: clean vet build
-	gzip $(PROGRAM) -c > qlap_$(VERSION)_$(GOOS)_$(GOARCH).gz
+ifeq ($(GOOS),windows)
+	zip qlap_$(VERSION)_$(GOOS)_$(GOARCH).zip qlap.exe
+	sha1sum qlap_$(VERSION)_$(GOOS)_$(GOARCH).zip > qlap_$(VERSION)_$(GOOS)_$(GOARCH).zip.sha1sum
+else
+	gzip qlap -c > qlap_$(VERSION)_$(GOOS)_$(GOARCH).gz
 	sha1sum qlap_$(VERSION)_$(GOOS)_$(GOARCH).gz > qlap_$(VERSION)_$(GOOS)_$(GOARCH).gz.sha1sum
+endif
 
 .PHONY: clean
 clean:
-	rm -f $(PROGRAM)
+	rm -f qlap qlap.exe

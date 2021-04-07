@@ -1,4 +1,5 @@
 /qlap
 /qlap.exe
 *.gz
+*.zip
 *.sha1sum
