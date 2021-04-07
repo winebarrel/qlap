@@ -3,10 +3,11 @@ package qlap
 import (
 	"fmt"
 	"math/rand"
-	"qlap/randstr"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/winebarrel/randstr"
 )
 
 type AutoGenerateSqlLoadType string
