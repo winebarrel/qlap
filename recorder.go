@@ -9,6 +9,7 @@ import (
 )
 
 type RecorderReport struct {
+	DSN         string
 	StartedAt   time.Time
 	FinishedAt  time.Time
 	ElapsedTime time.Duration
@@ -25,6 +26,7 @@ type RecorderReport struct {
 }
 
 type RecorderOpts struct {
+	DSN       string
 	HInterval time.Duration
 }
 
@@ -152,6 +154,7 @@ func (rec *Recorder) Report() (rr *RecorderReport) {
 	queryCnt := rec.Count()
 
 	rr = &RecorderReport{
+		DSN:         rec.DSN,
 		StartedAt:   rec.startedAt,
 		FinishedAt:  rec.finishedAt,
 		ElapsedTime: nanoElapsed / time.Second,

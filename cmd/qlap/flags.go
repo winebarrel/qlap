@@ -68,6 +68,8 @@ func parseFlags() (flags *Flags) {
 		printErrorAndExit("DSN parsing error: " + err.Error())
 	}
 
+	flags.DSN = *dsn
+
 	if myCfg.DBName == "" {
 		myCfg.DBName = DefaultDBName
 	}
