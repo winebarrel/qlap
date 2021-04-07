@@ -139,4 +139,5 @@ $ qlap -dsn root:@/ -nagents 3 -rate 100 -time 10 \
 
 ## Related Links
 
-* https://github.com/winebarrel/qrnl
+* Load testing tool using query log
+    * https://github.com/winebarrel/qrn
