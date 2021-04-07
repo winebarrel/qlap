@@ -33,7 +33,7 @@ func (qs *PreQueries) Set(f string) error { *qs = append(*qs, f); return nil }
 func parseFlags() (flags *Flags) {
 	flags = &Flags{}
 	var preqs PreQueries
-	dsn := flag.String("dsn", "", "Data Source Name")
+	dsn := flag.String("dsn", "", "Data Source Name, see https://github.com/go-sql-driver/mysql#examples")
 	flag.IntVar(&flags.NAgents, "nagents", 1, "Number of agents")
 	argTime := flag.Int("time", DefaultTime, "Test run time (sec). Zero is infinity")
 	flag.IntVar(&flags.Rate, "rate", 0, "Rate limit for each agent (qps). Zero is unlimited")

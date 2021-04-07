@@ -21,7 +21,7 @@ Usage of qlap:
   -drop-existing-db
     	Forcibly delete the existing DB
   -dsn string
-    	Data Source Name
+    	Data Source Name, see https://github.com/go-sql-driver/mysql#examples
   -engine string
     	Engine of the table to be created
   -hinterval string
@@ -132,10 +132,6 @@ $ qlap -dsn root:@/ -nagents 3 -rate 100 -time 10 \
   }
 }
 ```
-
-## DSN Examples
-
-* https://github.com/go-sql-driver/mysql#examples
 
 ## Related Links
 
