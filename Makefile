@@ -2,11 +2,6 @@ SHELL   := /bin/bash
 VERSION := v0.4.3
 GOOS    := $(shell go env GOOS)
 GOARCH  := $(shell go env GOARCH)
-ifeq ($(GOOS),windows)
-	PROGRAM := qlap.exe
-else
-	PROGRAM := qlap
-endif
 
 .PHONY: all
 all: vet build
