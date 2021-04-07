@@ -15,7 +15,7 @@ Usage of qlap:
   -auto-generate-sql-write-number int
     	Number of rows to be pre-populated for each agent (default 100)
   -char-cols-index
-    	Create an index on the VARCHAR column if 'true'
+    	Create indexes on VARCHAR columns in the table to be created
   -commit-rate int
     	Commit every X queries
   -drop-existing-db
@@ -27,7 +27,7 @@ Usage of qlap:
   -hinterval string
     	Histogram interval, e.g. '100ms' (default "0")
   -int-cols-index
-    	Create an index on the INT column if 'true'
+    	Create indexes on INT columns in the table to be created
   -nagents int
     	Number of agents (default 1)
   -number-char-cols int
