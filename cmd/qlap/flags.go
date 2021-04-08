@@ -46,6 +46,7 @@ func parseFlags() (flags *Flags) {
 	preqs := flag.String("pre-query", "", "Queries to be pre-executed for each agent")
 	creates := flag.String("create", "", "SQL for creating custom tables")
 	flag.BoolVar(&flags.DropExistingDatabase, "drop-db", false, "Forcibly delete the existing DB")
+	flag.BoolVar(&flags.NoDropDatabase, "no-drop", false, "Do not drop database after testing")
 	hinterval := flag.String("hinterval", "0", "Histogram interval, e.g. '100ms'")
 	delimiter := flag.String("delimiter", ";", "SQL statements delimiter")
 	flag.Parse()

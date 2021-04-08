@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"os/signal"
 	"sync/atomic"
 	"time"
 
@@ -26,6 +27,7 @@ type TaskOpts struct {
 	NumberPrePopulatedData int
 	DropExistingDatabase   bool
 	UseExistingDatabase    bool
+	NoDropDatabase         bool
 	Engine                 string
 	Creates                []string
 }
@@ -278,6 +280,22 @@ func (task *Task) Run() (*Recorder, error) {
 		}()
 	}
 
+	// SIGINT
+	sgnlCh := make(chan os.Signal, 1)
+	signal.Notify(sgnlCh, os.Interrupt)
+
+	go func() {
+		select {
+		case <-ctx.Done():
+			// Nothing to do
+		case <-sgnlCh:
+			cancel()
+			_ = eg.Wait()
+			_ = task.teardownDB()
+			os.Exit(130)
+		}
+	}()
+
 	err := eg.Wait()
 	cancel()
 
@@ -302,7 +320,7 @@ func (task *Task) Close() error {
 }
 
 func (task *Task) teardownDB() error {
-	if !task.UseExistingDatabase {
+	if !task.NoDropDatabase && !task.UseExistingDatabase {
 		db, err := task.MysqlConfig.openAndPing(1)
 
 		if err != nil {

@@ -34,6 +34,8 @@ Usage of qlap:
     	Create indexes on INT columns in the table to be created
   -nagents int
     	Number of agents (default 1)
+  -no-drop
+    	Do not drop database after testing
   -number-char-cols int
     	Number of VARCHAR columns in the table to be created (default 1)
   -number-int-cols int
