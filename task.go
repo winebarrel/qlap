@@ -157,7 +157,7 @@ func (task *Task) setupDB() ([]int, error) {
 
 	ctxWithoutCancel := context.Background()
 	ctx, cancel := context.WithCancel(ctxWithoutCancel)
-	eg := task.prePopulatData(ctx)
+	eg := task.prePopulateData(ctx)
 	task.trapSigint(ctx, cancel, eg)
 	err = eg.Wait()
 	cancel()
@@ -184,7 +184,7 @@ func (task *Task) setupDB() ([]int, error) {
 	return idList, nil
 }
 
-func (task *Task) prePopulatData(ctx context.Context) *errgroup.Group {
+func (task *Task) prePopulateData(ctx context.Context) *errgroup.Group {
 	eg, ctx := errgroup.WithContext(ctx)
 
 	for i := 0; i < task.NAgents; i++ {
