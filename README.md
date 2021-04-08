@@ -5,55 +5,38 @@ qlap is a MySQL load testing tool like [mysqlslap](https://dev.mysql.com/doc/ref
 ## Usage
 
 ```
-Usage of qlap:
-  -auto-generate-sql
-    	Automatically generate SQL to execute
-  -auto-generate-sql-load-type string
-    	Test load type: 'mixed', 'update', 'write', 'key', or 'read' (default "mixed")
-  -auto-generate-sql-secondary-indexes int
-    	Number of secondary indexes in the table to be created
-  -auto-generate-sql-write-number int
-    	Number of rows to be pre-populated for each agent (default 100)
-  -char-cols-index
-    	Create indexes on VARCHAR columns in the table to be created
-  -commit-rate int
-    	Commit every X queries
-  -create string
-    	SQL for creating custom tables
-  -delimiter string
-    	SQL statements delimiter (default ";")
-  -drop-db
-    	Forcibly delete the existing DB
-  -dsn string
-    	Data Source Name, see https://github.com/go-sql-driver/mysql#examples
-  -engine string
-    	Engine of the table to be created
-  -hinterval string
-    	Histogram interval, e.g. '100ms' (default "0")
-  -int-cols-index
-    	Create indexes on INT columns in the table to be created
-  -nagents int
-    	Number of agents (default 1)
-  -no-drop
-    	Do not drop database after testing
-  -number-char-cols int
-    	Number of VARCHAR columns in the table to be created (default 1)
-  -number-int-cols int
-    	Number of INT columns in the table to be created (default 1)
-  -pre-query string
-    	Queries to be pre-executed for each agent
-  -query string
-    	SQL to execute
-  -rate int
-    	Rate limit for each agent (qps). Zero is unlimited
-  -time int
-    	Test run time (sec). Zero is infinity (default 60)
+qlap - MySQL load testing tool like mysqlslap.
+
+  Flags:
+       --version                               Displays the program version string.
+    -h --help                                  Displays help with available flag, subcommand, and positional value parameters.
+    -d --dsn                                   Data Source Name, see https://github.com/go-sql-driver/mysql#examples.
+    -n --nagents                               Number of agents. (default: 1)
+    -t --time                                  Test run time (sec). Zero is infinity. (default: 60)
+    -r --rate                                  Rate limit for each agent (qps). Zero is unlimited. (default: 0)
+    -a --auto-generate-sql                     Automatically generate SQL to execute.
+    -q --query                                 SQL to execute.
+       --auto-generate-sql-write-number        Number of rows to be pre-populated for each agent. (default: 100)
+       --auto-generate-sql-load-type           Test load type: 'mixed', 'update', 'write', 'key', or 'read'. (default: mixed)
+       --auto-generate-sql-secondary-indexes   Number of secondary indexes in the table to be created. (default: 0)
+       --commit-rate                           Commit every X queries. (default: 0)
+    -e --engine                                Engine of the table to be created.
+    -x --number-char-cols                      Number of VARCHAR columns in the table to be created. (default: 1)
+       --char-cols-index                       Create indexes on VARCHAR columns in the table to be created.
+    -y --number-int-cols                       Number of INT columns in the table to be created. (default: 1)
+       --int-cols-index                        Create indexes on INT columns in the table to be created.
+       --pre-query                             Queries to be pre-executed for each agent.
+       --create                                SQL for creating custom tables.
+       --drop-db                               Forcibly delete the existing DB.
+       --no-drop                               Do not drop database after testing.
+       --hinterval                             Histogram interval, e.g. '100ms'. (default: 0)
+    -F --delimiter                             SQL statements delimiter. (default: ;)
 ```
 
 ```
-$ qlap -dsn root@/ -nagents 3 -rate 100 -time 10 \
-    -auto-generate-sql -auto-generate-sql-load-type mixed \
-    -number-int-cols 3 -number-char-cols 3
+$ qlap -d root@/ -n 3 -r 100 -t 10 \
+    -a -auto-generate-sql-load-type mixed \
+    -x 3 -y 3
 
 00:10 | 3 agents / run 2727 queries (303 qps)
 
@@ -142,9 +125,9 @@ $ qlap -dsn root@/ -nagents 3 -rate 100 -time 10 \
 ## Use Custom Query
 
 ```
-qlap -dsn root@/ \
-  -create 'create table test (id int); insert into test values (1)' \
-  -query 'select id from test; select count(id) from test'
+qlap -d root@/ \
+  --create 'create table test (id int); insert into test values (1)' \
+  -q 'select id from test; select count(id) from test'
 ```
 
 ## Related Links
