@@ -266,7 +266,8 @@ func (task *Task) Run() (*Recorder, error) {
 				break LOOP
 			case <-progressTick.C:
 				execCnt := rec.Count()
-				task.printProgress(execCnt, prevExecCnt, taskStart, int(numTermAgents))
+				termAgentCnt := int(atomic.LoadInt32(&numTermAgents))
+				task.printProgress(execCnt, prevExecCnt, taskStart, termAgentCnt)
 				prevExecCnt = execCnt
 			}
 		}
