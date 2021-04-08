@@ -67,6 +67,8 @@ $ qlap -dsn root@/ -nagents 3 -rate 100 -time 10 \
   "AutoGenerateSql": true,
   "NumberPrePopulatedData": 100,
   "DropExistingDatabase": false,
+  "UseExistingDatabase": false,
+  "NoDropDatabase": false,
   "Engine": "",
   "LoadType": "mixed",
   "NumberSecondaryIndexes": 0,
