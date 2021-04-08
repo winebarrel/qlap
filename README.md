@@ -138,7 +138,7 @@ $ qlap -dsn root@/ -nagents 3 -rate 100 -time 10 \
 }
 ```
 
-## Use custom query
+## Use Custom Query
 
 ```
 qlap -dsn root@/ \
