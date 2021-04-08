@@ -155,7 +155,11 @@ func (task *Task) setupDB() ([]int, error) {
 		return nil, fmt.Errorf("Create table error (query=%s): %w", tblStmt, err)
 	}
 
-	err = task.prePopulatData()
+	ctxWithoutCancel := context.Background()
+	ctx, cancel := context.WithCancel(ctxWithoutCancel)
+	eg := task.prePopulatData(ctx)
+	task.trapSigint(ctx, cancel, eg)
+	err = eg.Wait()
 
 	if err != nil {
 		return nil, fmt.Errorf("Pre-populate data error: %w", err)
@@ -179,8 +183,8 @@ func (task *Task) setupDB() ([]int, error) {
 	return idList, nil
 }
 
-func (task *Task) prePopulatData() error {
-	eg, ctx := errgroup.WithContext(context.Background())
+func (task *Task) prePopulatData(ctx context.Context) *errgroup.Group {
+	eg, ctx := errgroup.WithContext(ctx)
 
 	for i := 0; i < task.NAgents; i++ {
 		eg.Go(func() error {
@@ -211,7 +215,7 @@ func (task *Task) prePopulatData() error {
 		})
 	}
 
-	return eg.Wait()
+	return eg
 }
 
 func (task *Task) Run() (*Recorder, error) {
@@ -231,8 +235,8 @@ func (task *Task) Run() (*Recorder, error) {
 		}
 	}()
 
-	eg, ctx := errgroup.WithContext(context.Background())
-	ctxWithCancel, cancel := context.WithCancel(ctx)
+	eg, ctxWithoutCancel := errgroup.WithContext(context.Background())
+	ctx, cancel := context.WithCancel(ctxWithoutCancel)
 	progressTick := time.NewTicker(ProgressReportPeriod * time.Second)
 	rec.start(task.NAgents * 3)
 	var numTermAgents int32
@@ -245,7 +249,7 @@ func (task *Task) Run() (*Recorder, error) {
 	for _, v := range task.agents {
 		agent := v
 		eg.Go(func() error {
-			err := agent.run(ctxWithCancel, rec, token)
+			err := agent.run(ctx, rec, token)
 			atomic.AddInt32(&numTermAgents, 1)
 			return err
 		})
@@ -280,22 +284,7 @@ func (task *Task) Run() (*Recorder, error) {
 		}()
 	}
 
-	// SIGINT
-	sgnlCh := make(chan os.Signal, 1)
-	signal.Notify(sgnlCh, os.Interrupt)
-
-	go func() {
-		select {
-		case <-ctx.Done():
-			// Nothing to do
-		case <-sgnlCh:
-			cancel()
-			_ = eg.Wait()
-			_ = task.teardownDB()
-			os.Exit(130)
-		}
-	}()
-
+	task.trapSigint(ctx, cancel, eg)
 	err := eg.Wait()
 	cancel()
 
@@ -353,4 +342,23 @@ func (task *Task) printProgress(execCnt int, prevExecCnt int, taskStart time.Tim
 	sec := (elapsedTimeSec - min*time.Minute) / time.Second
 	progressLine := fmt.Sprintf("%02d:%02d | %d agents / run %d queries (%.0f qps)", min, sec, numRunAgents, execCnt, qps)
 	fmt.Fprintf(os.Stderr, "\r%-*s", termWidth, progressLine)
+}
+
+func (task *Task) trapSigint(ctx context.Context, cancel context.CancelFunc, eg *errgroup.Group) {
+	// SIGINT
+	sgnlCh := make(chan os.Signal, 1)
+	signal.Notify(sgnlCh, os.Interrupt)
+
+	go func() {
+		select {
+		case <-ctx.Done():
+			// Nothing to do
+		case <-sgnlCh:
+			cancel()
+			_ = eg.Wait()
+			_ = task.teardownDB()
+			os.Exit(130)
+		}
+	}()
+
 }
