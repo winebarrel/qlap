@@ -5,7 +5,7 @@ qlap is a MySQL load testing tool like [mysqlslap](https://dev.mysql.com/doc/ref
 ## Usage
 
 ```
-Usage of qlap:
+Usage of ./qlap:
   -auto-generate-sql
     	Automatically generate SQL to execute
   -auto-generate-sql-load-type string
@@ -18,6 +18,8 @@ Usage of qlap:
     	Create indexes on VARCHAR columns in the table to be created
   -commit-rate int
     	Commit every X queries
+  -delimiter string
+    	SQL statements delimiter (default ";")
   -drop-existing-db
     	Forcibly delete the existing DB
   -dsn string
@@ -34,7 +36,7 @@ Usage of qlap:
     	Number of VARCHAR columns in the table to be created (default 1)
   -number-int-cols int
     	Number of INT columns in the table to be created (default 1)
-  -pre-query value
+  -pre-query string
     	Queries to be pre-executed for each agent
   -query string
     	SQL to execute

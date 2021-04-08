@@ -29,7 +29,7 @@ type DataOpts struct {
 	IntColsIndex           bool
 	NumberCharCols         int
 	CharColsIndex          bool
-	Query                  string
+	Queries                []string
 	PreQueries             []string
 }
 
@@ -40,6 +40,7 @@ type Data struct {
 	idIdx     int
 	coin      bool
 	commitCnt int
+	queryIdx  int
 }
 
 func newData(opts *DataOpts, idList []int) (data *Data) {
@@ -76,8 +77,15 @@ func (data *Data) next() string {
 		data.commitCnt++
 	}
 
-	if data.Query != "" {
-		return data.Query
+	if len(data.Queries) > 0 {
+		q := data.Queries[data.queryIdx]
+		data.queryIdx++
+
+		if data.queryIdx == len(data.Queries) {
+			data.queryIdx = 0
+		}
+
+		return q
 	}
 
 	switch data.LoadType {

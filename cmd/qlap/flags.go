@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"qlap"
+	"strings"
 	"time"
 
 	"github.com/go-sql-driver/mysql"
@@ -25,20 +26,14 @@ type Flags struct {
 	qlap.RecorderOpts
 }
 
-type PreQueries []string
-
-func (qs *PreQueries) String() string     { return fmt.Sprintf("%v", *qs) }
-func (qs *PreQueries) Set(f string) error { *qs = append(*qs, f); return nil }
-
 func parseFlags() (flags *Flags) {
 	flags = &Flags{}
-	var preqs PreQueries
 	dsn := flag.String("dsn", "", "Data Source Name, see https://github.com/go-sql-driver/mysql#examples")
 	flag.IntVar(&flags.NAgents, "nagents", 1, "Number of agents")
 	argTime := flag.Int("time", DefaultTime, "Test run time (sec). Zero is infinity")
 	flag.IntVar(&flags.Rate, "rate", 0, "Rate limit for each agent (qps). Zero is unlimited")
 	flag.BoolVar(&flags.AutoGenerateSql, "auto-generate-sql", false, "Automatically generate SQL to execute")
-	flag.StringVar(&flags.Query, "query", "", "SQL to execute")
+	queries := flag.String("query", "", "SQL to execute")
 	flag.IntVar(&flags.NumberPrePopulatedData, "auto-generate-sql-write-number", DefaultNumberPrePopulatedData, "Number of rows to be pre-populated for each agent")
 	strLoadType := flag.String("auto-generate-sql-load-type", DefaultLoadType, "Test load type: 'mixed', 'update', 'write', or 'key'")
 	flag.IntVar(&flags.NumberSecondaryIndexes, "auto-generate-sql-secondary-indexes", 0, "Number of secondary indexes in the table to be created")
@@ -48,9 +43,10 @@ func parseFlags() (flags *Flags) {
 	flag.BoolVar(&flags.IntColsIndex, "int-cols-index", false, "Create indexes on INT columns in the table to be created")
 	flag.IntVar(&flags.NumberCharCols, "number-char-cols", DefaultNumberCharCols, "Number of VARCHAR columns in the table to be created")
 	flag.BoolVar(&flags.CharColsIndex, "char-cols-index", false, "Create indexes on VARCHAR columns in the table to be created")
-	flag.Var(&preqs, "pre-query", "Queries to be pre-executed for each agent")
+	preqs := flag.String("pre-query", "", "Queries to be pre-executed for each agent")
 	flag.BoolVar(&flags.DropExistingDatabase, "drop-existing-db", false, "Forcibly delete the existing DB")
 	hinterval := flag.String("hinterval", "0", "Histogram interval, e.g. '100ms'")
+	delimiter := flag.String("delimiter", ";", "SQL statements delimiter")
 	flag.Parse()
 
 	if flag.NFlag() == 0 {
@@ -93,11 +89,20 @@ func parseFlags() (flags *Flags) {
 		printErrorAndExit("'-rate' must be >= 0")
 	}
 
+	// Delimiter
+	if *delimiter == "" {
+		printErrorAndExit("'-delimiter' must not be empty")
+	}
+
 	// AutoGenerateSql / Query
-	if !flags.AutoGenerateSql && flags.Query == "" {
+	if !flags.AutoGenerateSql && *queries == "" {
 		printErrorAndExit("Either '-auto-generate-sql' or '-query' is required")
-	} else if flags.AutoGenerateSql && flags.Query != "" {
+	} else if flags.AutoGenerateSql && *queries != "" {
 		printErrorAndExit("Cannot set both '-auto-generate-sql' and '-query'")
+	}
+
+	if *queries != "" {
+		flags.Queries = strings.Split(*queries, *delimiter)
 	}
 
 	// NumberPrePopulatedData
@@ -144,8 +149,8 @@ func parseFlags() (flags *Flags) {
 	}
 
 	// PreQueries
-	for _, v := range preqs {
-		flags.PreQueries = append(flags.PreQueries, v)
+	if *preqs != "" {
+		flags.PreQueries = strings.Split(*preqs, *delimiter)
 	}
 
 	// HInterval
