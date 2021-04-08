@@ -160,6 +160,7 @@ func (task *Task) setupDB() ([]int, error) {
 	eg := task.prePopulatData(ctx)
 	task.trapSigint(ctx, cancel, eg)
 	err = eg.Wait()
+	cancel()
 
 	if err != nil {
 		return nil, fmt.Errorf("Pre-populate data error: %w", err)
@@ -360,5 +361,4 @@ func (task *Task) trapSigint(ctx context.Context, cancel context.CancelFunc, eg 
 			os.Exit(130)
 		}
 	}()
-
 }
