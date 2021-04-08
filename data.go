@@ -13,13 +13,11 @@ import (
 type AutoGenerateSqlLoadType string
 
 const (
-	LoadTypeMixed  = AutoGenerateSqlLoadType("mixed")  // require prepopulated data
-	LoadTypeUpdate = AutoGenerateSqlLoadType("update") // require prepopulated data
-	LoadTypeWrite  = AutoGenerateSqlLoadType("write")
-	LoadTypeKey    = AutoGenerateSqlLoadType("key")  // require prepopulated data
-	LoadTypeRead   = AutoGenerateSqlLoadType("read") // require prepopulated data
-	// NOTE: "read" is a full scan, so I will not implement it
-	CharColLen            = 128
+	LoadTypeMixed         = AutoGenerateSqlLoadType("mixed")  // require prepopulated data
+	LoadTypeUpdate        = AutoGenerateSqlLoadType("update") // require prepopulated data
+	LoadTypeWrite         = AutoGenerateSqlLoadType("write")
+	LoadTypeKey           = AutoGenerateSqlLoadType("key")  // require prepopulated data
+	LoadTypeRead          = AutoGenerateSqlLoadType("read") // require prepopulated data
 	AutoGenerateTableName = "t1"
 )
 
@@ -187,7 +185,7 @@ func (data *Data) buildInsertStmt() string {
 
 	for i := 1; i <= data.NumberCharCols; i++ {
 		sb.WriteString(",'")
-		sb.WriteString(randstr.String(data.randSrc, CharColLen))
+		sb.WriteString(randstr.String(data.randSrc, 128))
 		sb.WriteString("'")
 	}
 
@@ -214,7 +212,7 @@ func (data *Data) buildUpdateStmt() string {
 			sb.WriteString(",")
 		}
 
-		fmt.Fprintf(&sb, "charcol%d = '%s'", i, randstr.String(data.randSrc, CharColLen))
+		fmt.Fprintf(&sb, "charcol%d = '%s'", i, randstr.String(data.randSrc, 128))
 	}
 
 	fmt.Fprintf(&sb, " WHERE id = %d", data.nextId())
