@@ -13,11 +13,11 @@ import (
 type AutoGenerateSqlLoadType string
 
 const (
-	LoadTypeMixed         = AutoGenerateSqlLoadType("mixed")  // require prepopulated data
-	LoadTypeUpdate        = AutoGenerateSqlLoadType("update") // require prepopulated data
+	LoadTypeMixed         = AutoGenerateSqlLoadType("mixed")  // require pre-populated data
+	LoadTypeUpdate        = AutoGenerateSqlLoadType("update") // require pre-populated data
 	LoadTypeWrite         = AutoGenerateSqlLoadType("write")
-	LoadTypeKey           = AutoGenerateSqlLoadType("key")  // require prepopulated data
-	LoadTypeRead          = AutoGenerateSqlLoadType("read") // require prepopulated data
+	LoadTypeKey           = AutoGenerateSqlLoadType("key")  // require pre-populated data
+	LoadTypeRead          = AutoGenerateSqlLoadType("read") // require pre-populated data
 	AutoGenerateTableName = "t1"
 )
 
