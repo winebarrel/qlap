@@ -50,6 +50,8 @@ $ qlap -d root@/ -n 3 -r 100 -t 10 \
   "AutoGenerateSql": true,
   "NumberPrePopulatedData": 100,
   "DropExistingDatabase": false,
+  "UseExistingDatabase": false,
+  "NoDropDatabase": false,
   "Engine": "",
   "LoadType": "mixed",
   "NumberSecondaryIndexes": 0,
