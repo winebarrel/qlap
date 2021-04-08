@@ -26,6 +26,7 @@ type TaskOpts struct {
 	NumberPrePopulatedData int
 	DropExistingDatabase   bool
 	Engine                 string
+	Creates                []string
 }
 
 type Task struct {
@@ -114,11 +115,23 @@ func (task *Task) setupDB() ([]int, error) {
 		return nil, fmt.Errorf("Use database error: %w", err)
 	}
 
+	if len(task.Creates) > 0 {
+		for _, stmt := range task.Creates {
+			_, err = db.Exec(stmt)
+
+			if err != nil {
+				return nil, fmt.Errorf("Create table error (query=%s): %w", stmt, err)
+			}
+		}
+
+		return []int{}, nil
+	}
+
 	tblStmt := newData(task.dataOpts, nil).buildCreateTableStmt()
 	_, err = db.Exec(tblStmt)
 
 	if err != nil {
-		return nil, fmt.Errorf("Create table error: %w", err)
+		return nil, fmt.Errorf("Create table error (query=%s): %w", tblStmt, err)
 	}
 
 	err = task.prePopulatData()

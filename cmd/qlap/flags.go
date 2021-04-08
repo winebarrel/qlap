@@ -44,6 +44,7 @@ func parseFlags() (flags *Flags) {
 	flag.IntVar(&flags.NumberCharCols, "number-char-cols", DefaultNumberCharCols, "Number of VARCHAR columns in the table to be created")
 	flag.BoolVar(&flags.CharColsIndex, "char-cols-index", false, "Create indexes on VARCHAR columns in the table to be created")
 	preqs := flag.String("pre-query", "", "Queries to be pre-executed for each agent")
+	creates := flag.String("create", "", "SQL for creating custom tables")
 	flag.BoolVar(&flags.DropExistingDatabase, "drop-existing-db", false, "Forcibly delete the existing DB")
 	hinterval := flag.String("hinterval", "0", "Histogram interval, e.g. '100ms'")
 	delimiter := flag.String("delimiter", ";", "SQL statements delimiter")
@@ -94,15 +95,25 @@ func parseFlags() (flags *Flags) {
 		printErrorAndExit("'-delimiter' must not be empty")
 	}
 
-	// AutoGenerateSql / Query
+	// AutoGenerateSql / Queries
 	if !flags.AutoGenerateSql && *queries == "" {
 		printErrorAndExit("Either '-auto-generate-sql' or '-query' is required")
 	} else if flags.AutoGenerateSql && *queries != "" {
 		printErrorAndExit("Cannot set both '-auto-generate-sql' and '-query'")
 	}
 
+	// Queries
 	if *queries != "" {
 		flags.Queries = strings.Split(*queries, *delimiter)
+	}
+
+	// Creates
+	if *creates != "" {
+		if *queries == "" {
+			printErrorAndExit("'-query' is required for '-create'")
+		}
+
+		flags.Creates = strings.Split(*creates, *delimiter)
 	}
 
 	// NumberPrePopulatedData

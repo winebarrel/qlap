@@ -5,7 +5,7 @@ qlap is a MySQL load testing tool like [mysqlslap](https://dev.mysql.com/doc/ref
 ## Usage
 
 ```
-Usage of ./qlap:
+Usage of qlap:
   -auto-generate-sql
     	Automatically generate SQL to execute
   -auto-generate-sql-load-type string
@@ -18,6 +18,8 @@ Usage of ./qlap:
     	Create indexes on VARCHAR columns in the table to be created
   -commit-rate int
     	Commit every X queries
+  -create string
+    	SQL for creating custom tables
   -delimiter string
     	SQL statements delimiter (default ";")
   -drop-existing-db
@@ -134,6 +136,15 @@ $ qlap -dsn root@/ -nagents 3 -rate 100 -time 10 \
     ]
   }
 }
+```
+
+## Use custom query
+
+```
+qlap -dsn root@/ \
+  -create 'create table test (id int); insert into test values (1)' \
+  -query 'select id from test; select count(id) from test' \
+  -drop-existing-db
 ```
 
 ## Related Links
