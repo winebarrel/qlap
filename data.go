@@ -18,7 +18,8 @@ const (
 	LoadTypeWrite  = AutoGenerateSqlLoadType("write")
 	LoadTypeKey    = AutoGenerateSqlLoadType("key") // require prepopulated data
 	// NOTE: "read" is a full scan, so I will not implement it
-	CharColLen = 128
+	CharColLen            = 128
+	AutoGenerateTableName = "t1"
 )
 
 type DataOpts struct {
@@ -111,8 +112,7 @@ func (data *Data) next() string {
 
 func (data *Data) buildCreateTableStmt() string {
 	sb := strings.Builder{}
-	sb.WriteString("CREATE TABLE t1 (")
-	sb.WriteString("id SERIAL")
+	sb.WriteString("CREATE TABLE " + AutoGenerateTableName + " (id SERIAL")
 
 	for i := 1; i <= data.NumberSecondaryIndexes; i++ {
 		fmt.Fprintf(&sb, ", id%d VARCHAR(36) UNIQUE KEY", i)
@@ -159,7 +159,7 @@ func (data *Data) buildSelectByKeyStmt() string {
 		fmt.Fprintf(&sb, "charcol%d", i)
 	}
 
-	sb.WriteString(" FROM t1")
+	sb.WriteString(" FROM " + AutoGenerateTableName)
 	fmt.Fprintf(&sb, " WHERE id = %d", data.nextId())
 
 	return sb.String()
@@ -167,8 +167,7 @@ func (data *Data) buildSelectByKeyStmt() string {
 
 func (data *Data) buildInsertStmt() string {
 	sb := strings.Builder{}
-	sb.WriteString("INSERT INTO t1 VALUES (")
-	sb.WriteString("NULL") // id
+	sb.WriteString("INSERT INTO " + AutoGenerateTableName + " VALUES (NULL")
 
 	for i := 1; i <= data.NumberSecondaryIndexes; i++ {
 		sb.WriteString(", UUID()")
@@ -193,7 +192,7 @@ func (data *Data) buildInsertStmt() string {
 
 func (data *Data) buildUpdateStmt() string {
 	sb := strings.Builder{}
-	sb.WriteString("UPDATE t1 SET ")
+	sb.WriteString("UPDATE " + AutoGenerateTableName + " SET ")
 
 	for i := 1; i <= data.NumberIntCols; i++ {
 		if i >= 2 {

@@ -25,6 +25,7 @@ type TaskOpts struct {
 	AutoGenerateSql        bool
 	NumberPrePopulatedData int
 	DropExistingDatabase   bool
+	UseExistingDatabase    bool
 	Engine                 string
 	Creates                []string
 }
@@ -103,10 +104,22 @@ func (task *Task) setupDB() ([]int, error) {
 		}
 	}
 
-	_, err = db.Exec(fmt.Sprintf("CREATE DATABASE `%s`", task.MysqlConfig.DBName))
+	row := db.QueryRow(fmt.Sprintf("SELECT COUNT(1) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = '%s'", task.MysqlConfig.DBName))
+	var dbCnt int
+	err = row.Scan(&dbCnt)
 
 	if err != nil {
-		return nil, fmt.Errorf("Create database error: %w", err)
+		return nil, fmt.Errorf("Database existence check error: %w", err)
+	}
+
+	if dbCnt < 1 {
+		_, err = db.Exec(fmt.Sprintf("CREATE DATABASE `%s`", task.MysqlConfig.DBName))
+
+		if err != nil {
+			return nil, fmt.Errorf("Create database error: %w", err)
+		}
+	} else {
+		task.UseExistingDatabase = true
 	}
 
 	_, err = db.Exec(fmt.Sprintf("USE `%s`", task.MysqlConfig.DBName))
@@ -125,6 +138,12 @@ func (task *Task) setupDB() ([]int, error) {
 		}
 
 		return []int{}, nil
+	}
+
+	_, err = db.Exec("DROP TABLE IF EXISTS " + AutoGenerateTableName)
+
+	if err != nil {
+		return nil, fmt.Errorf("Drop table error: %w", err)
 	}
 
 	tblStmt := newData(task.dataOpts, nil).buildCreateTableStmt()
@@ -283,17 +302,19 @@ func (task *Task) Close() error {
 }
 
 func (task *Task) teardownDB() error {
-	db, err := task.MysqlConfig.openAndPing(1)
+	if !task.UseExistingDatabase {
+		db, err := task.MysqlConfig.openAndPing(1)
 
-	if err != nil {
-		return fmt.Errorf("Connection error: %w", err)
-	}
+		if err != nil {
+			return fmt.Errorf("Connection error: %w", err)
+		}
 
-	defer db.Close()
-	_, err = db.Exec(fmt.Sprintf("DROP DATABASE `%s`", task.MysqlConfig.DBName))
+		defer db.Close()
+		_, err = db.Exec(fmt.Sprintf("DROP DATABASE `%s`", task.MysqlConfig.DBName))
 
-	if err != nil {
-		return fmt.Errorf("Drop database error: %w", err)
+		if err != nil {
+			return fmt.Errorf("Drop database error: %w", err)
+		}
 	}
 
 	return nil
