@@ -9,7 +9,7 @@ Usage of qlap:
   -auto-generate-sql
     	Automatically generate SQL to execute
   -auto-generate-sql-load-type string
-    	Test load type: 'mixed', 'update', 'write', or 'key' (default "mixed")
+    	Test load type: 'mixed', 'update', 'write', 'key', or 'read' (default "mixed")
   -auto-generate-sql-secondary-indexes int
     	Number of secondary indexes in the table to be created
   -auto-generate-sql-write-number int

@@ -16,7 +16,8 @@ const (
 	LoadTypeMixed  = AutoGenerateSqlLoadType("mixed")  // require prepopulated data
 	LoadTypeUpdate = AutoGenerateSqlLoadType("update") // require prepopulated data
 	LoadTypeWrite  = AutoGenerateSqlLoadType("write")
-	LoadTypeKey    = AutoGenerateSqlLoadType("key") // require prepopulated data
+	LoadTypeKey    = AutoGenerateSqlLoadType("key")  // require prepopulated data
+	LoadTypeRead   = AutoGenerateSqlLoadType("read") // require prepopulated data
 	// NOTE: "read" is a full scan, so I will not implement it
 	CharColLen            = 128
 	AutoGenerateTableName = "t1"
@@ -97,14 +98,16 @@ func (data *Data) next() string {
 		if coin {
 			return data.buildInsertStmt()
 		} else {
-			return data.buildSelectByKeyStmt()
+			return data.buildSelectStmt(true)
 		}
 	case LoadTypeUpdate:
 		return data.buildUpdateStmt()
 	case LoadTypeWrite:
 		return data.buildInsertStmt()
 	case LoadTypeKey:
-		return data.buildSelectByKeyStmt()
+		return data.buildSelectStmt(true)
+	case LoadTypeRead:
+		return data.buildSelectStmt(false)
 	default:
 		panic("Failed to generate SQL statement: invalid load type: " + data.LoadType)
 	}
@@ -139,7 +142,7 @@ func (data *Data) buildCreateTableStmt() string {
 	return sb.String()
 }
 
-func (data *Data) buildSelectByKeyStmt() string {
+func (data *Data) buildSelectStmt(key bool) string {
 	sb := strings.Builder{}
 	sb.WriteString("SELECT ")
 
@@ -160,7 +163,10 @@ func (data *Data) buildSelectByKeyStmt() string {
 	}
 
 	sb.WriteString(" FROM " + AutoGenerateTableName)
-	fmt.Fprintf(&sb, " WHERE id = %d", data.nextId())
+
+	if key {
+		fmt.Fprintf(&sb, " WHERE id = %d", data.nextId())
+	}
 
 	return sb.String()
 }

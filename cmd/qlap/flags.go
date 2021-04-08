@@ -35,7 +35,7 @@ func parseFlags() (flags *Flags) {
 	flag.BoolVar(&flags.AutoGenerateSql, "auto-generate-sql", false, "Automatically generate SQL to execute")
 	queries := flag.String("query", "", "SQL to execute")
 	flag.IntVar(&flags.NumberPrePopulatedData, "auto-generate-sql-write-number", DefaultNumberPrePopulatedData, "Number of rows to be pre-populated for each agent")
-	strLoadType := flag.String("auto-generate-sql-load-type", DefaultLoadType, "Test load type: 'mixed', 'update', 'write', or 'key'")
+	strLoadType := flag.String("auto-generate-sql-load-type", DefaultLoadType, "Test load type: 'mixed', 'update', 'write', 'key', or 'read'")
 	flag.IntVar(&flags.NumberSecondaryIndexes, "auto-generate-sql-secondary-indexes", 0, "Number of secondary indexes in the table to be created")
 	flag.IntVar(&flags.CommitRate, "commit-rate", 0, "Commit every X queries")
 	flag.StringVar(&flags.Engine, "engine", "", "Engine of the table to be created")
@@ -128,14 +128,16 @@ func parseFlags() (flags *Flags) {
 	if loadType != qlap.LoadTypeMixed &&
 		loadType != qlap.LoadTypeUpdate &&
 		loadType != qlap.LoadTypeWrite &&
-		loadType != qlap.LoadTypeKey {
+		loadType != qlap.LoadTypeKey &&
+		loadType != qlap.LoadTypeRead {
 		printErrorAndExit("Invalid load type: " + *strLoadType)
 	}
 
 	if flags.NumberPrePopulatedData == 0 && (loadType == qlap.LoadTypeMixed ||
 		loadType == qlap.LoadTypeUpdate ||
-		loadType == qlap.LoadTypeKey) {
-		printErrorAndExit("Pre-populated data is required for 'mixed', 'update', and 'key'")
+		loadType == qlap.LoadTypeKey ||
+		loadType == qlap.LoadTypeRead) {
+		printErrorAndExit("Pre-populated data is required for 'mixed', 'update', 'key', and 'read'")
 	}
 
 	flags.LoadType = loadType
