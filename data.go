@@ -221,5 +221,8 @@ func (data *Data) nextId() int {
 		data.idIdx = 0
 	}
 
-	return data.idList[data.idIdx]
+	id := data.idList[data.idIdx]
+	data.idIdx++
+
+	return id
 }
