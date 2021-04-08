@@ -51,8 +51,7 @@ Usage of qlap:
 ```
 $ qlap -dsn root@/ -nagents 3 -rate 100 -time 10 \
     -auto-generate-sql -auto-generate-sql-load-type mixed \
-    -number-int-cols 3 -number-char-cols 3 \
-    -drop-db
+    -number-int-cols 3 -number-char-cols 3
 
 00:10 | 3 agents / run 2727 queries (303 qps)
 
@@ -143,8 +142,7 @@ $ qlap -dsn root@/ -nagents 3 -rate 100 -time 10 \
 ```
 qlap -dsn root@/ \
   -create 'create table test (id int); insert into test values (1)' \
-  -query 'select id from test; select count(id) from test' \
-  -drop-db
+  -query 'select id from test; select count(id) from test'
 ```
 
 ## Related Links
