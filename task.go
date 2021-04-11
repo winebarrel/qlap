@@ -32,6 +32,7 @@ type TaskOpts struct {
 	Engine                 string
 	Creates                []string
 	OnlyPrint              bool
+	NoProgress             bool `json:"-"`
 }
 
 type Task struct {
@@ -277,7 +278,7 @@ func (task *Task) Run() (*Recorder, error) {
 				progressTick.Stop()
 				break LOOP
 			case <-progressTick.C:
-				if !task.OnlyPrint {
+				if !task.NoProgress && !task.OnlyPrint {
 					execCnt := rec.Count()
 					termAgentCnt := int(atomic.LoadInt32(&numTermAgents))
 					task.printProgress(execCnt, prevExecCnt, taskStart, termAgentCnt)
@@ -305,7 +306,7 @@ func (task *Task) Run() (*Recorder, error) {
 	cancel()
 
 	// Clear progress line
-	if !rec.OnlyPrint {
+	if !task.NoProgress || !task.OnlyPrint {
 		fmt.Fprintf(os.Stderr, "\r\n\n")
 	}
 

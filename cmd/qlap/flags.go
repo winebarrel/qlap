@@ -69,6 +69,7 @@ func parseFlags() (flags *Flags) {
 	delimiter := DefaultDelimiter
 	flaggy.String(&delimiter, "F", "delimiter", "SQL statements delimiter.")
 	flaggy.Bool(&flags.OnlyPrint, "", "only-print", "Just print SQL without connecting to DB.")
+	flaggy.Bool(&flags.NoProgress, "", "no-progress", "Do not show progress.")
 	flaggy.Parse()
 
 	if len(os.Args) <= 1 {

@@ -34,6 +34,7 @@ qlap - MySQL load testing tool like mysqlslap.
        --hinterval                             Histogram interval, e.g. '100ms'. (default: 0)
     -F --delimiter                             SQL statements delimiter. (default: ;)
        --only-print                            Just print SQL without connecting to DB.
+       --no-progress                           Do not show progress.
 ```
 
 ```
