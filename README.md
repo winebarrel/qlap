@@ -15,9 +15,10 @@ qlap - MySQL load testing tool like mysqlslap.
     -t --time                                  Test run time (sec). Zero is infinity. (default: 60)
     -r --rate                                  Rate limit for each agent (qps). Zero is unlimited. (default: 0)
     -a --auto-generate-sql                     Automatically generate SQL to execute.
+       --auto-generate-sql-guid-primary        Use GUID as the primary key of the table to be created.
     -q --query                                 SQL to execute.
        --auto-generate-sql-write-number        Number of rows to be pre-populated for each agent. (default: 100)
-       --auto-generate-sql-load-type           Test load type: 'mixed', 'update', 'write', 'key', or 'read'. (default: mixed)
+    -l --auto-generate-sql-load-type           Test load type: 'mixed', 'update', 'write', 'key', or 'read'. (default: mixed)
        --auto-generate-sql-secondary-indexes   Number of secondary indexes in the table to be created. (default: 0)
        --commit-rate                           Commit every X queries. (default: 0)
     -e --engine                                Engine of the table to be created.
@@ -34,9 +35,7 @@ qlap - MySQL load testing tool like mysqlslap.
 ```
 
 ```
-$ qlap -d root@/ -n 3 -r 100 -t 10 \
-    -a --auto-generate-sql-load-type mixed \
-    -x 3 -y 3
+$ qlap -d root@/ -n 3 -r 100 -t 10 -a -l mixed -x 3 -y 3
 
 00:10 | 3 agents / run 2727 queries (303 qps)
 
