@@ -113,7 +113,7 @@ func (task *Task) setupDB() ([]string, error) {
 
 	if _, ok := db.(*NullDB); ok {
 		err = nil
-		dbCnt = 1
+		dbCnt = 0
 	} else {
 		err = row.Scan(&dbCnt)
 	}
