@@ -31,6 +31,7 @@ type TaskOpts struct {
 	NoDropDatabase         bool
 	Engine                 string
 	Creates                []string
+	OnlyPrint              bool
 }
 
 type Task struct {
@@ -109,7 +110,13 @@ func (task *Task) setupDB() ([]string, error) {
 
 	row := db.QueryRow(fmt.Sprintf("SELECT COUNT(1) FROM information_schema.SCHEMATA WHERE SCHEMA_NAME = '%s'", task.MysqlConfig.DBName))
 	var dbCnt int
-	err = row.Scan(&dbCnt)
+
+	if _, ok := db.(*NullDB); ok {
+		err = nil
+		dbCnt = 1
+	} else {
+		err = row.Scan(&dbCnt)
+	}
 
 	if err != nil {
 		return nil, fmt.Errorf("Database existence check error: %w", err)
@@ -169,6 +176,10 @@ func (task *Task) setupDB() ([]string, error) {
 
 	idList := make([]string, task.NumberPrePopulatedData*task.NAgents)
 	rs, err := db.Query("SELECT id FROM t1")
+
+	if _, ok := db.(*NullDB); ok {
+		return idList, nil
+	}
 
 	if err != nil {
 		return nil, fmt.Errorf("Ftech id error: %w", err)
@@ -266,10 +277,12 @@ func (task *Task) Run() (*Recorder, error) {
 				progressTick.Stop()
 				break LOOP
 			case <-progressTick.C:
-				execCnt := rec.Count()
-				termAgentCnt := int(atomic.LoadInt32(&numTermAgents))
-				task.printProgress(execCnt, prevExecCnt, taskStart, termAgentCnt)
-				prevExecCnt = execCnt
+				if !task.OnlyPrint {
+					execCnt := rec.Count()
+					termAgentCnt := int(atomic.LoadInt32(&numTermAgents))
+					task.printProgress(execCnt, prevExecCnt, taskStart, termAgentCnt)
+					prevExecCnt = execCnt
+				}
 			}
 		}
 	}()
@@ -292,7 +305,9 @@ func (task *Task) Run() (*Recorder, error) {
 	cancel()
 
 	// Clear progress line
-	fmt.Fprintf(os.Stderr, "\r\n\n")
+	if !rec.OnlyPrint {
+		fmt.Fprintf(os.Stderr, "\r\n\n")
+	}
 
 	if err != nil {
 		return nil, fmt.Errorf("Error during agent running: %w", err)

@@ -33,6 +33,7 @@ qlap - MySQL load testing tool like mysqlslap.
        --no-drop                               Do not drop database after testing.
        --hinterval                             Histogram interval, e.g. '100ms'. (default: 0)
     -F --delimiter                             SQL statements delimiter. (default: ;)
+       --only-print                            Just print SQL without connecting to DB.
 ```
 
 ```

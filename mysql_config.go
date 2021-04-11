@@ -8,9 +8,21 @@ import (
 
 type MysqlConfig struct {
 	*mysql.Config
+	OnlyPrint bool
 }
 
-func (myCfg *MysqlConfig) openAndPing(maxIdleConns int) (*sql.DB, error) {
+type DB interface {
+	Exec(query string, args ...interface{}) (sql.Result, error)
+	Query(query string, args ...interface{}) (*sql.Rows, error)
+	QueryRow(query string, args ...interface{}) *sql.Row
+	Close() error
+}
+
+func (myCfg *MysqlConfig) openAndPing(maxIdleConns int) (DB, error) {
+	if myCfg.OnlyPrint {
+		return &NullDB{}, nil
+	}
+
 	dsn := myCfg.FormatDSN()
 	db, err := sql.Open("mysql", dsn)
 

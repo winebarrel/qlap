@@ -2,7 +2,6 @@ package qlap
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"math/rand"
 	"time"
@@ -15,7 +14,7 @@ const (
 type Agent struct {
 	id          int
 	mysqlConfig *MysqlConfig
-	db          *sql.DB
+	db          DB
 	taskOps     *TaskOpts
 	dataOpts    *DataOpts
 	data        *Data

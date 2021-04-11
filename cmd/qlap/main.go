@@ -28,7 +28,9 @@ func main() {
 		log.Fatalf("Failed to close Task: %s", err)
 	}
 
-	report := rec.Report()
-	rawJson, _ := json.MarshalIndent(report, "", "  ")
-	fmt.Println(string(rawJson))
+	if !flags.OnlyPrint {
+		report := rec.Report()
+		rawJson, _ := json.MarshalIndent(report, "", "  ")
+		fmt.Println(string(rawJson))
+	}
 }

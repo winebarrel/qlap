@@ -68,6 +68,7 @@ func parseFlags() (flags *Flags) {
 	flaggy.String(&hinterval, "", "hinterval", "Histogram interval, e.g. '100ms'.")
 	delimiter := DefaultDelimiter
 	flaggy.String(&delimiter, "F", "delimiter", "SQL statements delimiter.")
+	flaggy.Bool(&flags.OnlyPrint, "", "only-print", "Just print SQL without connecting to DB.")
 	flaggy.Parse()
 
 	if len(os.Args) <= 1 {
@@ -91,7 +92,10 @@ func parseFlags() (flags *Flags) {
 		myCfg.DBName = DefaultDBName
 	}
 
-	flags.MysqlConfig = &qlap.MysqlConfig{Config: myCfg}
+	flags.MysqlConfig = &qlap.MysqlConfig{
+		Config:    myCfg,
+		OnlyPrint: flags.OnlyPrint,
+	}
 
 	// NAgents
 	if flags.NAgents < 1 {
