@@ -30,7 +30,7 @@ type DataOpts struct {
 	IntColsIndex           bool
 	NumberCharCols         int
 	CharColsIndex          bool
-	Queries                []string
+	Queries                []string `json:"-"`
 	PreQueries             []string
 }
 

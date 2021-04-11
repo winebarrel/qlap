@@ -30,9 +30,9 @@ type TaskOpts struct {
 	UseExistingDatabase    bool
 	NoDropDatabase         bool
 	Engine                 string
-	Creates                []string
-	OnlyPrint              bool
-	NoProgress             bool `json:"-"`
+	Creates                []string `json:"-"`
+	OnlyPrint              bool     `json:"-"`
+	NoProgress             bool     `json:"-"`
 }
 
 type Task struct {

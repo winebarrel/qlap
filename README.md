@@ -17,7 +17,7 @@ qlap - MySQL load testing tool like mysqlslap.
     -r --rate                                  Rate limit for each agent (qps). Zero is unlimited. (default: 0)
     -a --auto-generate-sql                     Automatically generate SQL to execute.
        --auto-generate-sql-guid-primary        Use GUID as the primary key of the table to be created.
-    -q --query                                 SQL to execute.
+    -q --query                                 SQL to execute. (file or string)
        --auto-generate-sql-write-number        Number of rows to be pre-populated for each agent. (default: 100)
     -l --auto-generate-sql-load-type           Test load type: 'mixed', 'update', 'write', 'key', or 'read'. (default: mixed)
        --auto-generate-sql-secondary-indexes   Number of secondary indexes in the table to be created. (default: 0)
@@ -28,7 +28,7 @@ qlap - MySQL load testing tool like mysqlslap.
     -y --number-int-cols                       Number of INT columns in the table to be created. (default: 1)
        --int-cols-index                        Create indexes on INT columns in the table to be created.
        --pre-query                             Queries to be pre-executed for each agent.
-       --create                                SQL for creating custom tables.
+       --create                                SQL for creating custom tables. (file or string)
        --drop-db                               Forcibly delete the existing DB.
        --no-drop                               Do not drop database after testing.
        --hinterval                             Histogram interval, e.g. '100ms'. (default: 0)
@@ -50,18 +50,19 @@ $ qlap -d root@/ -n 3 -r 100 -t 10 -a -l mixed -x 3 -y 3
   "Rate": 100,
   "AutoGenerateSql": true,
   "NumberPrePopulatedData": 100,
+  "NumberQueriesToExecute": 0,
   "DropExistingDatabase": false,
   "UseExistingDatabase": false,
   "NoDropDatabase": false,
   "Engine": "",
   "LoadType": "mixed",
+  "GuidPrimary": false,
   "NumberSecondaryIndexes": 0,
   "CommitRate": 0,
   "NumberIntCols": 3,
   "IntColsIndex": false,
   "NumberCharCols": 3,
   "CharColsIndex": false,
-  "Queries": null,
   "PreQueries": null,
   "Token": "bf9716b4-c9c8-4539-9295-701cc46daa21",
   "QueryCount": 2930,
