@@ -36,7 +36,6 @@ qlap - MySQL load testing tool like mysqlslap.
 
 ```
 $ qlap -d root@/ -n 3 -r 100 -t 10 -a -l mixed -x 3 -y 3
-
 00:10 | 3 agents / run 2727 queries (303 qps)
 
 {
