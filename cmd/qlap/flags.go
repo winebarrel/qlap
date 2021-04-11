@@ -47,7 +47,7 @@ func parseFlags() (flags *Flags) {
 	flags.NumberPrePopulatedData = DefaultNumberPrePopulatedData
 	flaggy.Int(&flags.NumberPrePopulatedData, "", "auto-generate-sql-write-number", "Number of rows to be pre-populated for each agent.")
 	strLoadType := DefaultLoadType
-	flaggy.String(&strLoadType, "", "auto-generate-sql-load-type", "Test load type: 'mixed', 'update', 'write', 'key', or 'read'.")
+	flaggy.String(&strLoadType, "l", "auto-generate-sql-load-type", "Test load type: 'mixed', 'update', 'write', 'key', or 'read'.")
 	flaggy.Int(&flags.NumberSecondaryIndexes, "", "auto-generate-sql-secondary-indexes", "Number of secondary indexes in the table to be created.")
 	flaggy.Int(&flags.CommitRate, "", "commit-rate", "Commit every X queries.")
 	flaggy.String(&flags.Engine, "e", "engine", "Engine of the table to be created.")
