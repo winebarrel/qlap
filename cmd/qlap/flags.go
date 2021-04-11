@@ -41,6 +41,7 @@ func parseFlags() (flags *Flags) {
 	flaggy.Int(&argTime, "t", "time", "Test run time (sec). Zero is infinity.")
 	flaggy.Int(&flags.Rate, "r", "rate", "Rate limit for each agent (qps). Zero is unlimited.")
 	flaggy.Bool(&flags.AutoGenerateSql, "a", "auto-generate-sql", "Automatically generate SQL to execute.")
+	flaggy.Bool(&flags.GuidPrimary, "", "auto-generate-sql-guid-primary", "Use GUID as the primary key of the table to be created.")
 	var queries string
 	flaggy.String(&queries, "q", "query", "SQL to execute.")
 	flags.NumberPrePopulatedData = DefaultNumberPrePopulatedData

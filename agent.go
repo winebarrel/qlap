@@ -32,7 +32,7 @@ func newAgent(id int, myCfg *MysqlConfig, taskOps *TaskOpts, dataOpts *DataOpts)
 	return
 }
 
-func (agent *Agent) prepare(maxIdleConns int, idList []int) error {
+func (agent *Agent) prepare(maxIdleConns int, idList []string) error {
 	db, err := agent.mysqlConfig.openAndPing(maxIdleConns)
 
 	if err != nil {
@@ -42,7 +42,7 @@ func (agent *Agent) prepare(maxIdleConns int, idList []int) error {
 
 	agent.db = db
 
-	newIdList := make([]int, len(idList))
+	newIdList := make([]string, len(idList))
 	copy(newIdList, idList)
 	rand.Shuffle(len(newIdList), func(i, j int) { newIdList[i], newIdList[j] = newIdList[j], newIdList[i] })
 	agent.data = newData(agent.dataOpts, newIdList)

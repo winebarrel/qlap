@@ -23,6 +23,7 @@ const (
 
 type DataOpts struct {
 	LoadType               AutoGenerateSqlLoadType
+	GuidPrimary            bool
 	NumberSecondaryIndexes int
 	CommitRate             int
 	NumberIntCols          int
@@ -36,14 +37,14 @@ type DataOpts struct {
 type Data struct {
 	*DataOpts
 	randSrc   rand.Source
-	idList    []int
+	idList    []string
 	idIdx     int
 	coin      bool
 	commitCnt int
 	queryIdx  int
 }
 
-func newData(opts *DataOpts, idList []int) (data *Data) {
+func newData(opts *DataOpts, idList []string) (data *Data) {
 	data = &Data{
 		DataOpts: opts,
 		randSrc:  rand.NewSource(time.Now().UnixNano()),
@@ -113,7 +114,13 @@ func (data *Data) next() string {
 
 func (data *Data) buildCreateTableStmt() string {
 	sb := strings.Builder{}
-	sb.WriteString("CREATE TABLE " + AutoGenerateTableName + " (id SERIAL")
+	sb.WriteString("CREATE TABLE " + AutoGenerateTableName + " (id ")
+
+	if data.GuidPrimary {
+		sb.WriteString("VARCHAR(36) PRIMARY KEY")
+	} else {
+		sb.WriteString("SERIAL")
+	}
 
 	for i := 1; i <= data.NumberSecondaryIndexes; i++ {
 		fmt.Fprintf(&sb, ", id%d VARCHAR(36) UNIQUE KEY", i)
@@ -163,7 +170,7 @@ func (data *Data) buildSelectStmt(key bool) string {
 	sb.WriteString(" FROM " + AutoGenerateTableName)
 
 	if key {
-		fmt.Fprintf(&sb, " WHERE id = %d", data.nextId())
+		fmt.Fprintf(&sb, " WHERE id = '%s'", data.nextId())
 	}
 
 	return sb.String()
@@ -171,7 +178,13 @@ func (data *Data) buildSelectStmt(key bool) string {
 
 func (data *Data) buildInsertStmt() string {
 	sb := strings.Builder{}
-	sb.WriteString("INSERT INTO " + AutoGenerateTableName + " VALUES (NULL")
+	sb.WriteString("INSERT INTO " + AutoGenerateTableName + " VALUES (")
+
+	if data.GuidPrimary {
+		sb.WriteString("UUID()")
+	} else {
+		sb.WriteString("NULL")
+	}
 
 	for i := 1; i <= data.NumberSecondaryIndexes; i++ {
 		sb.WriteString(", UUID()")
@@ -215,12 +228,12 @@ func (data *Data) buildUpdateStmt() string {
 		fmt.Fprintf(&sb, "charcol%d = '%s'", i, randstr.String(data.randSrc, 128))
 	}
 
-	fmt.Fprintf(&sb, " WHERE id = %d", data.nextId())
+	fmt.Fprintf(&sb, " WHERE id = '%s'", data.nextId())
 
 	return sb.String()
 }
 
-func (data *Data) nextId() int {
+func (data *Data) nextId() string {
 	if data.idIdx >= len(data.idList) {
 		data.idIdx = 0
 	}

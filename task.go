@@ -76,7 +76,7 @@ func (task *Task) Prepare() error {
 	return nil
 }
 
-func (task *Task) setupDB() ([]int, error) {
+func (task *Task) setupDB() ([]string, error) {
 	// Temporarily empty the DB name
 	orgDBName := task.MysqlConfig.DBName
 	task.MysqlConfig.DBName = ""
@@ -139,7 +139,7 @@ func (task *Task) setupDB() ([]int, error) {
 			}
 		}
 
-		return []int{}, nil
+		return []string{}, nil
 	}
 
 	_, err = db.Exec("DROP TABLE IF EXISTS " + AutoGenerateTableName)
@@ -166,7 +166,7 @@ func (task *Task) setupDB() ([]int, error) {
 		return nil, fmt.Errorf("Pre-populate data error: %w", err)
 	}
 
-	idList := make([]int, task.NumberPrePopulatedData*task.NAgents)
+	idList := make([]string, task.NumberPrePopulatedData*task.NAgents)
 	rs, err := db.Query("SELECT id FROM t1")
 
 	if err != nil {
