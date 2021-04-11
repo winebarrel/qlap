@@ -13,6 +13,7 @@ qlap - MySQL load testing tool like mysqlslap.
     -d --dsn                                   Data Source Name, see https://github.com/go-sql-driver/mysql#examples.
     -n --nagents                               Number of agents. (default: 1)
     -t --time                                  Test run time (sec). Zero is infinity. (default: 60)
+       --number-queries                        Number of queries to execute per agent. Zero is infinity. (default: 0)
     -r --rate                                  Rate limit for each agent (qps). Zero is unlimited. (default: 0)
     -a --auto-generate-sql                     Automatically generate SQL to execute.
        --auto-generate-sql-guid-primary        Use GUID as the primary key of the table to be created.

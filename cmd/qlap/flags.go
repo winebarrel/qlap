@@ -39,6 +39,7 @@ func parseFlags() (flags *Flags) {
 	flaggy.Int(&flags.NAgents, "n", "nagents", "Number of agents.")
 	argTime := DefaultTime
 	flaggy.Int(&argTime, "t", "time", "Test run time (sec). Zero is infinity.")
+	flaggy.Int(&flags.NumberQueriesToExecute, "", "number-queries", "Number of queries to execute per agent. Zero is infinity.")
 	flaggy.Int(&flags.Rate, "r", "rate", "Rate limit for each agent (qps). Zero is unlimited.")
 	flaggy.Bool(&flags.AutoGenerateSql, "a", "auto-generate-sql", "Automatically generate SQL to execute.")
 	flaggy.Bool(&flags.GuidPrimary, "", "auto-generate-sql-guid-primary", "Use GUID as the primary key of the table to be created.")
@@ -95,6 +96,11 @@ func parseFlags() (flags *Flags) {
 	// NAgents
 	if flags.NAgents < 1 {
 		printErrorAndExit("'--nagents(-n)' must be >= 1")
+	}
+
+	// NumberQueriesToExecute
+	if flags.NumberQueriesToExecute < 0 {
+		printErrorAndExit("'--number-queries' must be >= 0")
 	}
 
 	// Time

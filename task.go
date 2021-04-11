@@ -25,6 +25,7 @@ type TaskOpts struct {
 	Rate                   int
 	AutoGenerateSql        bool
 	NumberPrePopulatedData int
+	NumberQueriesToExecute int
 	DropExistingDatabase   bool
 	UseExistingDatabase    bool
 	NoDropDatabase         bool

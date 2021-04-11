@@ -6,7 +6,7 @@ const (
 	ThrottleInterrupt = 1 * time.Millisecond
 )
 
-func loopWithThrottle(rate int, proc func() (bool, error)) error {
+func loopWithThrottle(rate int, proc func(i int) (bool, error)) error {
 	orgLimit := time.Duration(0)
 
 	if rate > 0 {
@@ -21,8 +21,8 @@ func loopWithThrottle(rate int, proc func() (bool, error)) error {
 	var txCnt int64
 	thrStart := time.Now()
 
-	for {
-		cont, err := proc()
+	for i := 0; ; i++ {
+		cont, err := proc(i)
 
 		if !cont || err != nil {
 			return err
