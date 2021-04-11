@@ -123,22 +123,22 @@ func (data *Data) buildCreateTableStmt() string {
 	}
 
 	for i := 1; i <= data.NumberSecondaryIndexes; i++ {
-		fmt.Fprintf(&sb, ", id%d VARCHAR(36) UNIQUE KEY", i)
+		fmt.Fprintf(&sb, ",id%d VARCHAR(36) UNIQUE KEY", i)
 	}
 
 	for i := 1; i <= data.NumberIntCols; i++ {
-		fmt.Fprintf(&sb, ", intcol%d INT(32)", i)
+		fmt.Fprintf(&sb, ",intcol%d INT(32)", i)
 
 		if data.IntColsIndex {
-			fmt.Fprintf(&sb, ", INDEX(intcol%d)", i)
+			fmt.Fprintf(&sb, ",INDEX(intcol%d)", i)
 		}
 	}
 
 	for i := 1; i <= data.NumberCharCols; i++ {
-		fmt.Fprintf(&sb, ", charcol%d VARCHAR(128)", i)
+		fmt.Fprintf(&sb, ",charcol%d VARCHAR(128)", i)
 
 		if data.CharColsIndex {
-			fmt.Fprintf(&sb, ", INDEX(charcol%d)", i)
+			fmt.Fprintf(&sb, ",INDEX(charcol%d)", i)
 		}
 	}
 
@@ -187,7 +187,7 @@ func (data *Data) buildInsertStmt() string {
 	}
 
 	for i := 1; i <= data.NumberSecondaryIndexes; i++ {
-		sb.WriteString(", UUID()")
+		sb.WriteString(",UUID()")
 	}
 
 	for i := 1; i <= data.NumberIntCols; i++ {
