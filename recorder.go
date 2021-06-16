@@ -19,7 +19,7 @@ type RecorderReport struct {
 	Token       string
 	GOMAXPROCS  int
 	QueryCount  int
-	QPS         float64
+	AvgQPS      float64
 	MaxQPS      float64
 	MinQPS      float64
 	MedianQPS   float64
@@ -165,7 +165,7 @@ func (rec *Recorder) Report() (rr *RecorderReport) {
 		Token:       rec.token,
 		GOMAXPROCS:  runtime.GOMAXPROCS(0),
 		QueryCount:  queryCnt,
-		QPS:         float64(queryCnt) * float64(time.Second) / float64(nanoElapsed),
+		AvgQPS:      float64(queryCnt) * float64(time.Second) / float64(nanoElapsed),
 		ExpectedQPS: rec.NAgents * rec.Rate,
 	}
 
