@@ -1,6 +1,7 @@
 package qlap
 
 import (
+	"runtime"
 	"sort"
 	"sync"
 	"time"
@@ -16,6 +17,7 @@ type RecorderReport struct {
 	TaskOpts
 	DataOpts
 	Token       string
+	GOMAXPROCS  int
 	QueryCount  int
 	QPS         float64
 	MaxQPS      float64
@@ -161,6 +163,7 @@ func (rec *Recorder) Report() (rr *RecorderReport) {
 		TaskOpts:    rec.TaskOpts,
 		DataOpts:    rec.DataOpts,
 		Token:       rec.token,
+		GOMAXPROCS:  runtime.GOMAXPROCS(0),
 		QueryCount:  queryCnt,
 		QPS:         float64(queryCnt) * float64(time.Second) / float64(nanoElapsed),
 		ExpectedQPS: rec.NAgents * rec.Rate,
