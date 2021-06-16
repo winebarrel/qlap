@@ -67,7 +67,7 @@ $ qlap -d root@/ -n 3 -r 100 -t 10 -a -l mixed -x 3 -y 3
   "Token": "bf9716b4-c9c8-4539-9295-701cc46daa21",
   "GOMAXPROCS": 16,
   "QueryCount": 2930,
-  "QPS": 292.4863396144265,
+  "AvgQPS": 292.4863396144265,
   "MaxQPS": 305,
   "MinQPS": 202,
   "MedianQPS": 303,
