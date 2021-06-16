@@ -2,6 +2,7 @@ package qlap
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"math/rand"
 	"time"
@@ -86,7 +87,7 @@ func (agent *Agent) run(ctx context.Context, recorder *Recorder, token string) e
 		}
 
 		q := agent.data.next()
-		rt, err := agent.query(q)
+		rt, err := agent.query(ctx, q)
 
 		if err != nil {
 			return false, fmt.Errorf("Execute query error (query=%s): %w", q, err)
@@ -123,12 +124,12 @@ func (agent *Agent) close() error {
 	return nil
 }
 
-func (agent *Agent) query(q string) (time.Duration, error) {
+func (agent *Agent) query(ctx context.Context, q string) (time.Duration, error) {
 	start := time.Now()
-	_, err := agent.db.Exec(q)
+	_, err := agent.db.ExecContext(ctx, q)
 	end := time.Now()
 
-	if err != nil {
+	if err != nil && !errors.Is(err, context.Canceled) {
 		return 0, err
 	}
 

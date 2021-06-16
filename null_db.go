@@ -1,6 +1,7 @@
 package qlap
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"os"
@@ -9,6 +10,11 @@ import (
 type NullDB struct{}
 
 func (db *NullDB) Exec(query string, args ...interface{}) (sql.Result, error) {
+	fmt.Fprintln(os.Stderr, query)
+	return nil, nil
+}
+
+func (db *NullDB) ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
 	fmt.Fprintln(os.Stderr, query)
 	return nil, nil
 }
