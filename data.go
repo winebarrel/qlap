@@ -26,6 +26,8 @@ type DataOpts struct {
 	GuidPrimary            bool
 	NumberSecondaryIndexes int
 	CommitRate             int
+	MixedSelRatio          int
+	MixedInsRatio          int
 	NumberIntCols          int
 	IntColsIndex           bool
 	NumberCharCols         int
@@ -39,7 +41,7 @@ type Data struct {
 	randSrc   rand.Source
 	idList    []string
 	idIdx     int
-	coin      bool
+	mixedIdx  int
 	commitCnt int
 	queryIdx  int
 }
@@ -91,14 +93,20 @@ func (data *Data) next() string {
 
 	switch data.LoadType {
 	case LoadTypeMixed:
-		coin := data.coin
-		data.coin = !coin
-
-		if coin {
-			return data.buildInsertStmt()
+		var stmt string
+		if data.mixedIdx < data.MixedSelRatio {
+			stmt = data.buildSelectStmt(true)
 		} else {
-			return data.buildSelectStmt(true)
+			stmt = data.buildInsertStmt()
 		}
+
+		data.mixedIdx++
+
+		if data.mixedIdx >= data.MixedSelRatio+data.MixedInsRatio {
+			data.mixedIdx = 0
+		}
+
+		return stmt
 	case LoadTypeUpdate:
 		return data.buildUpdateStmt()
 	case LoadTypeWrite:
