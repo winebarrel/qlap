@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"qlap"
+	"strconv"
 	"strings"
 	"time"
 
@@ -52,6 +53,8 @@ func parseFlags() (flags *Flags) {
 	flaggy.String(&strLoadType, "l", "auto-generate-sql-load-type", "Test load type: 'mixed', 'update', 'write', 'key', or 'read'.")
 	flaggy.Int(&flags.NumberSecondaryIndexes, "", "auto-generate-sql-secondary-indexes", "Number of secondary indexes in the table to be created.")
 	flaggy.Int(&flags.CommitRate, "", "commit-rate", "Commit every X queries.")
+	mixedSelInsRatio := "1:1"
+	flaggy.String(&mixedSelInsRatio, "", "mixed-sel-ins-ratio", "Mixed load type 'SELECT:INSERT' ratio.")
 	flaggy.String(&flags.Engine, "e", "engine", "Engine of the table to be created.")
 	flags.NumberCharCols = DefaultNumberCharCols
 	flaggy.Int(&flags.NumberCharCols, "x", "number-char-cols", "Number of VARCHAR columns in the table to be created.")
@@ -200,6 +203,24 @@ func parseFlags() (flags *Flags) {
 	// CommitRate
 	if flags.CommitRate < 0 {
 		printErrorAndExit("'--commit-rate' must be >= 0")
+	}
+
+	// MixedSelRatio / MixedInsRatio
+	if !strings.Contains(mixedSelInsRatio, ":") {
+		printErrorAndExit("Invalid mixed type 'SELECT:INSERT' ratio: ':' is not included")
+	}
+
+	ratios := strings.SplitN(mixedSelInsRatio, ":", 2)
+	flags.MixedSelRatio, err = strconv.Atoi(ratios[0])
+
+	if err != nil {
+		printErrorAndExit("Failed to parse SELECT ratio: " + err.Error())
+	}
+
+	flags.MixedInsRatio, err = strconv.Atoi(ratios[1])
+
+	if err != nil {
+		printErrorAndExit("Failed to parse INSERT ratio: " + err.Error())
 	}
 
 	// NumberIntCols

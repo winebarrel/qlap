@@ -22,6 +22,7 @@ qlap - MySQL load testing tool like mysqlslap.
     -l --auto-generate-sql-load-type           Test load type: 'mixed', 'update', 'write', 'key', or 'read'. (default: mixed)
        --auto-generate-sql-secondary-indexes   Number of secondary indexes in the table to be created. (default: 0)
        --commit-rate                           Commit every X queries. (default: 0)
+       --mixed-sel-ins-ratio                   Mixed load type 'SELECT:INSERT' ratio. (default: 1:1)
     -e --engine                                Engine of the table to be created.
     -x --number-char-cols                      Number of VARCHAR columns in the table to be created. (default: 1)
        --char-cols-index                       Create indexes on VARCHAR columns in the table to be created.
@@ -59,6 +60,8 @@ $ qlap -d root@/ -n 3 -r 100 -t 10 -a -l mixed -x 3 -y 3
   "GuidPrimary": false,
   "NumberSecondaryIndexes": 0,
   "CommitRate": 0,
+  "MixedSelRatio": 1,
+  "MixedInsRatio": 1,
   "NumberIntCols": 3,
   "IntColsIndex": false,
   "NumberCharCols": 3,
