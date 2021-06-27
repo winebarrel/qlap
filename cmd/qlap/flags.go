@@ -217,10 +217,18 @@ func parseFlags() (flags *Flags) {
 		printErrorAndExit("Failed to parse SELECT ratio: " + err.Error())
 	}
 
+	if flags.MixedSelRatio < 1 {
+		printErrorAndExit("Mixed type SELECT ratio must be >= 1")
+	}
+
 	flags.MixedInsRatio, err = strconv.Atoi(ratios[1])
 
 	if err != nil {
 		printErrorAndExit("Failed to parse INSERT ratio: " + err.Error())
+	}
+
+	if flags.MixedInsRatio < 1 {
+		printErrorAndExit("Mixed type INSERT ratio must be >= 1")
 	}
 
 	// NumberIntCols
