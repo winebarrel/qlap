@@ -61,6 +61,8 @@ func (data *Data) initStmts() []string {
 
 	if data.CommitRate > 0 {
 		stmts = append(stmts, "SET autocommit = 0")
+	} else {
+		stmts = append(stmts, "SET autocommit = 1")
 	}
 
 	if len(data.PreQueries) > 0 {
