@@ -140,7 +140,7 @@ qlap -d root@/ \
 
 ## Related Links
 
-* MySQL/PostgreSQL load testing tool using query log
-    * https://github.com/winebarrel/qrn
 * PostgreSQL load testing tool like mysqlslap
     * https://github.com/winebarrel/pgslap
+* DB load testing tool
+    * https://github.com/winebarrel/qube
